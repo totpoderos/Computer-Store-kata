@@ -1,7 +1,9 @@
 using System;
+using System.Linq;
 using ComputerStore.Controllers;
 using ComputerStore.Controllers.Request;
 using ComputerStore.Controllers.Response;
+using ComputerStore.Domain;
 
 namespace ComputerStore
 {
@@ -27,6 +29,16 @@ namespace ComputerStore
                 Description = addComputerDto.Description,
                 Price = addComputerDto.Price,
                 ImageFilename = addComputerDto.ImageFilename
+            };
+        }
+
+        public static OrderInformationDto OrderToOrderInfromationDto(Order order)
+        {
+            return new OrderInformationDto
+            {
+                OrderId = order.Guid,
+                OrderDate = order.Date,
+                ComputersGuid = order.Computers.Select(item => item.Guid).ToList()
             };
         }
     }

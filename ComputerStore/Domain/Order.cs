@@ -1,11 +1,12 @@
+using System;
 using System.Collections.Generic;
 
-namespace ComputerStore
+namespace ComputerStore.Domain
 {
     public class Order
     {
         public string Guid { get; set; }
-        public string Description { get; set; }
         public List<Computer> Computers { get; set; }
+        public DateTime Date { get; set; }
     }
 }

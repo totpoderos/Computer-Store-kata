@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using ComputerStore.Domain;
 
 namespace ComputerStore.Database
 {
@@ -36,6 +37,12 @@ namespace ComputerStore.Database
                 where order.Guid.ToUpper() == id.ToUpper()
                 select order;
             return query.FirstOrDefault();
+        }
+
+        public static List<Order> GetAllOrders()
+        {
+            var entities = DatabaseContext.GetEntities();
+            return entities.Orders;
         }
     }
 }

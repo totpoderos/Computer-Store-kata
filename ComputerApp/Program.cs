@@ -19,7 +19,7 @@ namespace ComputerApp
             var computersController = new ComputersController();
             ComputerInfoDto computerInfoDto = computersController.GetComputerInfo("iMac 27");
             OrdersController ordersController = new OrdersController();
-            ordersController.AddComputerToOrder(string.Empty, new AddComputerToOrderDto { ComputerId = computerInfoDto.Id});
+            ordersController.AddComputerToOrder(string.Empty, new AddComputersToOrderDto { ComputerId = computerInfoDto.Id});
             List<ComputerInfoDto> computers = computersController.All();
             computers.ToList().ForEach(PrintComputerInfo);
             Console.WriteLine("Orders");
