@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
+using ComputerStore.Domain;
 
-namespace ComputerStore
+namespace ComputerStore.Database
 {
     public class Entities
     {
@@ -33,17 +36,53 @@ namespace ComputerStore
                 Guid = Guid.NewGuid().ToString(), Name = "iMac 27", Description = "iMac 27' Description", Price = 2100,
                 ImageFilename = "iMac27.png"
             },
-        }; 
+        };
+
+        public List<User> Users = new List<User>
+        {
+            new User
+            {
+                Guid = Guid.NewGuid().ToString(),
+                Name = "Emily",
+                Surname = "Beck",
+                Username = "emilybeck",
+                Password = SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes("password1")),
+                Email = "emilybeck@mail.com",
+                IsRoot = false
+            },
+            new User
+            {
+                Guid = Guid.NewGuid().ToString(),
+                Name = "Marti",
+                Surname = "Smith",
+                Username = "martismith",
+                Password = SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes("password2")),
+                Email = "martismith@mail.com",
+                IsRoot = false
+            },
+            new User
+            {
+                Guid = Guid.NewGuid().ToString(),
+                Name = "Administrator",
+                Surname = string.Empty,
+                Username = "root",
+                Password = SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes("administrator")),
+                Email = "root@mail.com",
+                IsRoot = true
+            }
+        };
         
         public List<Order> Orders = new List<Order>();
 
         private List<Computer> _computers;
         private List<Order> _orders;
+        private List<User> _users;
 
         public Entities()
         {
             _computers = MakeACopy(Computers);
             _orders = MakeACopy(Orders);
+            _users = MakeACopy(Users);
         }
 
         private List<T> MakeACopy<T>(List<T> source)
@@ -57,12 +96,14 @@ namespace ComputerStore
         {
             _computers = MakeACopy(Computers);
             _orders = MakeACopy(Orders);
+            _users = MakeACopy(Users);
         }
         
         public void Undo()
         {
             Computers = MakeACopy(_computers);
             Orders = MakeACopy(_orders);
+            Users = MakeACopy(_users);
         }
     }
 }
