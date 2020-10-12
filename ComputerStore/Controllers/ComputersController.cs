@@ -1,0 +1,34 @@
+using System;
+using System.Collections.Generic;
+using ComputerStore.Controllers.Response;
+using ComputerStore.Database;
+
+namespace ComputerStore.Controllers
+{
+    public class ComputersController
+    {
+        public List<ComputerInfoDto> All()
+        {
+            var computers = QueryService.GetAllComputers();
+            List<ComputerInfoDto> computersDtos = new List<ComputerInfoDto>();
+            computers.ForEach(computer => computersDtos.Add(TransformationService.ComputerToResponseComputerDto(computer)));
+            return computersDtos;
+        }
+        public ComputerInfoDto GetComputerInfo(string name)
+        {
+            var computer = QueryService.FindComputer(name);
+            if (computer == null) throw new Exception("Computer not found, name: " + name);
+            return TransformationService.ComputerToResponseComputerDto(computer);
+        }
+
+        public ComputerImageInfoDto GetComputerImage(string guid)
+        {
+            var computer = QueryService.FindComputerByGuid(guid);
+            if (computer == null) throw new Exception("Computer not found, guid: " + guid);
+            return new ComputerImageInfoDto()
+            {
+                Content = ImageService.TransformTextoToAsciiMatrix(computer.Name)
+            };
+        }
+    }
+}
