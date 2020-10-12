@@ -5,7 +5,7 @@ using ComputerStore.Controllers;
 using ComputerStore.Controllers.Response;
 using NUnit.Framework;
 
-namespace ComputerStoreTests
+namespace ComputerStoreTests.Tests
 {
     [TestFixture]
     public class ComputersControllerTests
