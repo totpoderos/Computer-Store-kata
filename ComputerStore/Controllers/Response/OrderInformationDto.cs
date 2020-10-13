@@ -7,6 +7,7 @@ namespace ComputerStore.Controllers.Response
     {
         public string OrderId { get; set; }
         public DateTime OrderDate { get; set; }
-        public List<string> ComputersGuid { get; set; }
+        public List<OrderLineInfoDto> OrderLinesInfo { get; set; }
+        public Decimal Price { get; set; }
     }
 }

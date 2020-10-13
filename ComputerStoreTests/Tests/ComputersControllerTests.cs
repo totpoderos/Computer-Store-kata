@@ -50,14 +50,14 @@ namespace ComputerStoreTests.Tests
         {
             ComputersController computersController = new ComputersController();
             string computerName = "iMac 27";
-            string expectedSecondLineImageContet = "        " + " *    * " + "        " + "        " + "        " +
+            string expectedSecondLineImageContent = "        " + " *    * " + "        " + "        " + "        " +
                                                    " ****** " + " ********";
 
             ComputerInfoDto computerInfo = computersController.GetComputerInfo(computerName);
 
             ComputerImageInfoDto imageInfo = computersController.GetComputerImage(computerInfo.Id);
 
-            Assert.AreEqual(expectedSecondLineImageContet, imageInfo.Content[1]);
+            Assert.AreEqual(expectedSecondLineImageContent, imageInfo.Content[1]);
         }
         
         [Test]

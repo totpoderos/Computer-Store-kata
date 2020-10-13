@@ -12,12 +12,14 @@ namespace ComputerStore.Controllers
     {
         public NewOrderIdDto CreateNewOrder(NewOrderDto newOrderDto)
         {
+            ValidationService.ValidateNewOrderDto(newOrderDto);
             Order order = new Order()
             {
                 Guid = Guid.NewGuid().ToString(),
                 Date = DateTime.Now,
-                Computers =  newOrderDto.Computers.Select(QueryService.FindComputerByGuid).ToList()
+                OrderLines = newOrderDto.OrderLines.Select(TransformationService.NewOrderLineDtoToOrderLine).ToList(),
             };
+            
             Entities entities = DatabaseContext.GetEntities();
             entities.Orders.Add(order);
             entities.Save();
@@ -28,20 +30,24 @@ namespace ComputerStore.Controllers
         }
         public void AddComputerToOrder(string orderId, AddComputersToOrderDto computersToOrderDto)
         {
+            ValidationService.ValidateAddComputersToOrderDto(computersToOrderDto);
             Order order = QueryService.FindOrder(orderId);
             Entities entities = DatabaseContext.GetEntities();
             if (order == null)
             {
                 order = new Order { Guid = orderId};
-                order.Computers = new List<Computer>();
+                order.OrderLines =  new List<OrderLine>();
                 entities.Orders.Add(order);
             }
-
-            foreach (var computerId in computersToOrderDto.ComputerId)
+            
+            foreach (var orderLineDto in computersToOrderDto.OrderLines)
             {
-                Computer computer = QueryService.FindComputerByGuid(computerId);
-                if (computer == null) throw new Exception("Cannot add computer to Order, Computer not found Id: " + computerId);
-                order.Computers.Add(computer);
+                OrderLine orderLine =
+                    order.OrderLines.FirstOrDefault(ol => ol.Computer.Guid == orderLineDto.ComputerId);
+                if (orderLine != null)
+                    orderLine.Quantity += orderLineDto.Quantity;
+                else
+                    order.OrderLines.Add(TransformationService.AddOrderLineToOrderLine(orderLineDto));
             }
             entities.Save();
         }
@@ -49,24 +55,14 @@ namespace ComputerStore.Controllers
         public List<OrderInformationDto> All()
         {
             List<Order> orders = QueryService.GetAllOrders();
-            return orders.Select(TransformationService.OrderToOrderInfromationDto).ToList();
+            return orders.Select(TransformationService.OrderToOrderInformationDto).ToList();
         }
 
         public OrderInformationDto GetOrderInformation(string orderId)
         {
             Order order = QueryService.FindOrder(orderId);
             if (order == null) throw new Exception($"Order not found. Id: {orderId}");
-            return TransformationService.OrderToOrderInfromationDto(order);
+            return TransformationService.OrderToOrderInformationDto(order);
         }
-    }
-
-    public class NewOrderDto
-    {
-        public List<string> Computers { get; set; }
-    }
-
-    public class NewOrderIdDto
-    {
-        public string Id { get; set; }
     }
 }

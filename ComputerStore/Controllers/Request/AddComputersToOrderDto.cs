@@ -4,6 +4,6 @@ namespace ComputerStore.Controllers.Request
 {
     public class AddComputersToOrderDto
     {
-        public List<string> ComputerId { get; set; }
+        public List<AddOrderLineDto> OrderLines { get; set; }
     }
 }
