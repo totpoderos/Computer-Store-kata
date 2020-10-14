@@ -76,5 +76,34 @@ namespace ComputerStore
             };
             return orderLine;
         }
+
+        public static User NewUserDtoToUser(NewUserDto newUserDto)
+        {
+            string encryptedPassword = EncryptionService.HashPassword(newUserDto.Password);
+            string userGuid = Guid.NewGuid().ToString();
+            return new User
+            {
+                Guid = userGuid,
+                Name = newUserDto.Name,
+                Surname = newUserDto.Surname,
+                Username = newUserDto.Username,
+                Password = encryptedPassword,
+                IsRoot = newUserDto.IsRoot,
+                Email = newUserDto.Email
+            };
+        }
+
+        public static UserInfoDto UserToUserInfoDto(User user)
+        {
+            return new UserInfoDto
+            {
+                Id = user.Guid,
+                Name = user.Name,
+                Surname = user.Surname,
+                Email = user.Email,
+                Username = user.Username,
+                IsRoot = user.IsRoot
+            };
+        }
     }
 }

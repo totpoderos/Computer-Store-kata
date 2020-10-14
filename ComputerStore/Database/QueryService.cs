@@ -44,5 +44,23 @@ namespace ComputerStore.Database
             var entities = DatabaseContext.GetEntities();
             return entities.Orders;
         }
+
+        public static User FindUserById(string userId)
+        {
+            var entities = DatabaseContext.GetEntities();
+            var query = from user in entities.Users
+                where user.Guid.ToUpper().Equals(userId.ToUpper())
+                select user;
+            return query.FirstOrDefault();
+        }
+
+        public static User FinsUserByUsername(string username)
+        {
+            var entities = DatabaseContext.GetEntities();
+            var query = from user in entities.Users
+                where user.Username.ToUpper().Equals(username.ToUpper())
+                select user;
+            return query.FirstOrDefault();
+        }
     }
 }

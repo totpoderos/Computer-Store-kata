@@ -1,8 +1,7 @@
-namespace ComputerStore.Domain
+namespace ComputerStore.Controllers.Request
 {
-    public class User
+    public class UpdateUserDto
     {
-        public string Guid { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
         public string Username { get; set; }

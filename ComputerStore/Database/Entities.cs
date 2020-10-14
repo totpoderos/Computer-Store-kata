@@ -46,7 +46,7 @@ namespace ComputerStore.Database
                 Name = "Emily",
                 Surname = "Beck",
                 Username = "emilybeck",
-                Password = SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes("password1")),
+                Password = EncryptionService.HashPassword("password1"),
                 Email = "emilybeck@mail.com",
                 IsRoot = false
             },
@@ -56,7 +56,7 @@ namespace ComputerStore.Database
                 Name = "Marti",
                 Surname = "Smith",
                 Username = "martismith",
-                Password = SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes("password2")),
+                Password = EncryptionService.HashPassword("password2"),
                 Email = "martismith@mail.com",
                 IsRoot = false
             },
@@ -66,7 +66,7 @@ namespace ComputerStore.Database
                 Name = "Administrator",
                 Surname = string.Empty,
                 Username = "root",
-                Password = SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes("administrator")),
+                Password = EncryptionService.HashPassword("administrator"),
                 Email = "root@mail.com",
                 IsRoot = true
             }

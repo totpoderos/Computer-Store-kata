@@ -9,7 +9,6 @@ namespace ComputerStore
 {
     public class ValidationService
     {
-        //Validates an entity. These methods will be called from controllers to validate and entity before saving into repository
         public static void ValidateRequestComputerDto(AddComputerDto addComputerDto)
         {
             if (string.IsNullOrEmpty(addComputerDto.Name)) throw new Exception("Computer Name cannot be null or empty");
@@ -42,6 +41,24 @@ namespace ComputerStore
             if (string.IsNullOrEmpty(updateComputerDto.Description)) throw new Exception("Computer Description cannot be null or empty");
             if (string.IsNullOrEmpty(updateComputerDto.ImageFilename)) throw new Exception("Computer Filename cannot be null or empty");
             if (updateComputerDto.Price < 0) throw new Exception("Computer price cannot be negative");
+        }
+
+        public static void ValidatedNewUserDto(NewUserDto newUserDto)
+        {
+            if (string.IsNullOrEmpty(newUserDto.Name)) throw new Exception("Name cannot be null or empty");
+            if (string.IsNullOrEmpty(newUserDto.Surname)) throw new Exception("Surname cannot be null or empty");
+            if (string.IsNullOrEmpty(newUserDto.Username)) throw new Exception("Username cannot be null or empty");
+            if (string.IsNullOrEmpty(newUserDto.Password)) throw new Exception("Password cannot be null or empty");
+            if (string.IsNullOrEmpty(newUserDto.Email)) throw new Exception("Email cannot be null or empty");
+        }
+
+        public static void ValidateUpdateUserDto(UpdateUserDto updatedUserDto)
+        {
+            if (string.IsNullOrEmpty(updatedUserDto.Name)) throw new Exception("Name cannot be null or empty");
+            if (string.IsNullOrEmpty(updatedUserDto.Surname)) throw new Exception("Surname cannot be null or empty");
+            if (string.IsNullOrEmpty(updatedUserDto.Username)) throw new Exception("Username cannot be null or empty");
+            if (string.IsNullOrEmpty(updatedUserDto.Password)) throw new Exception("Password cannot be null or empty");
+            if (string.IsNullOrEmpty(updatedUserDto.Email)) throw new Exception("Email cannot be null or empty");
         }
     }
 }
