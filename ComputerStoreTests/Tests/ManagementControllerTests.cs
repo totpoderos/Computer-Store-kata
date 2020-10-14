@@ -4,8 +4,6 @@ using System.Linq;
 using ComputerStore.Controllers;
 using ComputerStore.Controllers.Request;
 using ComputerStore.Controllers.Response;
-using ComputerStore.Domain;
-using Microsoft.VisualBasic.CompilerServices;
 using NUnit.Framework;
 
 namespace ComputerStoreTests.Tests
@@ -13,21 +11,21 @@ namespace ComputerStoreTests.Tests
     [TestFixture]
     public class ManagementControllerTests
     {
-        private ManagementController managementController;
+        private ManagementController _managementController;
 
         [SetUp]
         public void Setup()
         {
-            managementController = new ManagementController("root", "administrator");
+            _managementController = new ManagementController("root", "administrator");
         }
-        //Create computer
+
         [Test]
         public void Create_new_computer()
         {
             ComputersController computersController = new ComputersController();
             int numberOfComputers = computersController.All().Count;
 
-            managementController.AddComputer(new AddComputerDto
+            _managementController.AddComputer(new AddComputerDto
             {
                 Name = "TestComputer",
                 Description = "New computer",
@@ -45,7 +43,7 @@ namespace ComputerStoreTests.Tests
         public void Raise_an_error_when_creating_a_computer_with_empty_name()
         {
             Exception exception = Assert.Throws<Exception>(() =>
-                managementController.AddComputer(new AddComputerDto
+                _managementController.AddComputer(new AddComputerDto
                 {
                     Name = null,
                     Description = "New computer",
@@ -60,7 +58,7 @@ namespace ComputerStoreTests.Tests
         public void Raise_an_error_when_creating_a_computer_with_empty_description()
         {
             Exception exception = Assert.Throws<Exception>(() =>
-                managementController.AddComputer(new AddComputerDto
+                _managementController.AddComputer(new AddComputerDto
                 {
                     Name = "TestComputer",
                     Description = string.Empty,
@@ -75,7 +73,7 @@ namespace ComputerStoreTests.Tests
         public void Raise_an_error_when_creating_a_computer_with_empty_filename()
         {
             Exception exception = Assert.Throws<Exception>(() =>
-                managementController.AddComputer(new AddComputerDto
+                _managementController.AddComputer(new AddComputerDto
                 {
                     Name = "TestComputer",
                     Description = "New Computer",
@@ -90,7 +88,7 @@ namespace ComputerStoreTests.Tests
         public void Raise_an_error_when_creating_a_computer_with_negative_price()
         {
             Exception exception = Assert.Throws<Exception>(() =>
-                managementController.AddComputer(new AddComputerDto
+                _managementController.AddComputer(new AddComputerDto
                 {
                     Name = "TestComputer",
                     Description = "New Computer",
@@ -101,12 +99,11 @@ namespace ComputerStoreTests.Tests
             Assert.AreEqual("Computer price cannot be negative", exception.Message);
         }
 
-        //Update computer
         [Test]
         public void Update_computer_name()
         {
             ComputersController computersController = new ComputersController();
-            managementController.AddComputer(new AddComputerDto
+            _managementController.AddComputer(new AddComputerDto
             {
                 Name = "TestComputer",
                 Description = "New computer",
@@ -123,7 +120,7 @@ namespace ComputerStoreTests.Tests
                 ImageFilename = "amstrad.png"
             };
 
-            managementController.UpdateComputer(computerInfoDto.Id, updateComputerDto);
+            _managementController.UpdateComputer(computerInfoDto.Id, updateComputerDto);
 
             ComputerInfoDto updatedComputer = computersController.GetComputerInfo(computerInfoDto.Id);
             Assert.AreEqual(computerInfoDto.Id, updatedComputer.Id);
@@ -133,12 +130,11 @@ namespace ComputerStoreTests.Tests
             Assert.AreEqual(updateComputerDto.ImageFilename, updatedComputer.ImageFilename);
         }
 
-        //Delete computer
         [Test]
         public void Delete_computer()
         {
             ComputersController computersController = new ComputersController();
-            managementController.AddComputer(new AddComputerDto
+            _managementController.AddComputer(new AddComputerDto
             {
                 Name = "TestComputer",
                 Description = "New computer",
@@ -147,13 +143,12 @@ namespace ComputerStoreTests.Tests
             });
             ComputerInfoDto computerInfoDto = computersController.FindComputerByName("TestComputer");
 
-            managementController.DeleteComputer(computerInfoDto.Id);
+            _managementController.DeleteComputer(computerInfoDto.Id);
 
             Exception exception = Assert.Throws<Exception>(() => computersController.GetComputerInfo("TestComputer"));
             Assert.AreEqual("Computer not found, Id: TestComputer", exception.Message);
         }
-
-        //Delete Order
+        
         [Test]
         public void Delete_existing_order()
         {
@@ -172,13 +167,12 @@ namespace ComputerStoreTests.Tests
             NewOrderIdDto orderIdDto = ordersController.CreateNewOrder(newOrderDto);
             Assert.IsTrue(ordersController.All().Exists(order => order.OrderId.Equals(orderIdDto.Id)));
 
-            managementController.DeleteOrder(orderIdDto.Id);
+            _managementController.DeleteOrder(orderIdDto.Id);
 
             List<OrderInformationDto> allOrders = ordersController.All();
             Assert.IsFalse(allOrders.Exists(order => order.OrderId.Equals(orderIdDto.Id)));
         }
-
-        //Create user
+        
         [Test]
         public void Create_new_user()
         {
@@ -191,10 +185,10 @@ namespace ComputerStoreTests.Tests
                 Email = "unclebob@mail.com",
                 IsRoot = false
             };
-            NewUserIdDto newUserIdDto = managementController.CreateUser(newUserDto);
+            NewUserIdDto newUserIdDto = _managementController.CreateUser(newUserDto);
 
             Assert.IsNotNull(newUserIdDto);
-            UserInfoDto userInfoDto = managementController.GetUser(newUserIdDto.Id);
+            UserInfoDto userInfoDto = _managementController.GetUser(newUserIdDto.Id);
             Assert.IsNotNull(userInfoDto);
             Assert.AreEqual(newUserDto.Name, userInfoDto.Name);
             Assert.AreEqual(newUserDto.Surname, userInfoDto.Surname);
@@ -224,13 +218,12 @@ namespace ComputerStoreTests.Tests
                 Email = "johnsmith@mail.com",
                 IsRoot = false
             };
-            NewUserIdDto newUserIdDto = managementController.CreateUser(newUserDto);
+            NewUserIdDto newUserIdDto = _managementController.CreateUser(newUserDto);
 
-            Exception exception = Assert.Throws<Exception>(() => managementController.CreateUser(duplicatedUserDto));
+            Exception exception = Assert.Throws<Exception>(() => _managementController.CreateUser(duplicatedUserDto));
             Assert.AreEqual("Cannot create user. Username is duplicate. Username: UncleBob", exception.Message);
         }
 
-        //Update user
         [Test]
         public void Update_existing_user()
         {
@@ -253,11 +246,11 @@ namespace ComputerStoreTests.Tests
                 Email = "johnsmith@mail.com",
                 IsRoot = true
             };
-            NewUserIdDto newUserIdDto = managementController.CreateUser(newUserDto);
+            NewUserIdDto newUserIdDto = _managementController.CreateUser(newUserDto);
 
-            managementController.UpdateUser(newUserIdDto.Id, updatedUserDto);
+            _managementController.UpdateUser(newUserIdDto.Id, updatedUserDto);
 
-            UserInfoDto userInfoDto = managementController.GetUser(newUserIdDto.Id);
+            UserInfoDto userInfoDto = _managementController.GetUser(newUserIdDto.Id);
             Assert.AreEqual(updatedUserDto.Name, userInfoDto.Name);
             Assert.AreEqual(updatedUserDto.Surname, userInfoDto.Surname);
             Assert.AreEqual(updatedUserDto.Email, userInfoDto.Email);
@@ -265,7 +258,6 @@ namespace ComputerStoreTests.Tests
             Assert.AreEqual(updatedUserDto.IsRoot, userInfoDto.IsRoot);
         }
 
-        //Delete user
         [Test]
         public void Delete_existing_user()
         {
@@ -278,11 +270,11 @@ namespace ComputerStoreTests.Tests
                 Email = "martinfowler@mail.com",
                 IsRoot = false
             };
-            NewUserIdDto newUserIdDto = managementController.CreateUser(newUserDto);
+            NewUserIdDto newUserIdDto = _managementController.CreateUser(newUserDto);
 
-            managementController.DeleteUser(newUserIdDto.Id);
+            _managementController.DeleteUser(newUserIdDto.Id);
 
-            Exception exception = Assert.Throws<Exception>(() => managementController.GetUser(newUserIdDto.Id));
+            Exception exception = Assert.Throws<Exception>(() => _managementController.GetUser(newUserIdDto.Id));
             Assert.AreEqual("User not found. Id: " + newUserIdDto.Id, exception.Message);
         }
     }
