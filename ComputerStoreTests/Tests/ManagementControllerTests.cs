@@ -116,7 +116,7 @@ namespace ComputerStoreTests.Tests
                 ImageFilename = "test.png"
             });
             
-            ComputerInfoDto computerInfoDto = computersController.GetComputerInfo("TestComputer");
+            ComputerInfoDto computerInfoDto = computersController.FindComputerByName("TestComputer");
             UpdateComputerDto updateComputerDto = new UpdateComputerDto
             {
                 Name = "Amstrad CPC",
@@ -127,7 +127,7 @@ namespace ComputerStoreTests.Tests
 
             managementController.UpdateComputer(computerInfoDto.Id, updateComputerDto);
             
-            ComputerInfoDto updatedComputer = computersController.GetComputerInfo("Amstrad CPC");
+            ComputerInfoDto updatedComputer = computersController.GetComputerInfo(computerInfoDto.Id);
             Assert.AreEqual(computerInfoDto.Id, updatedComputer.Id);
             Assert.AreEqual(updateComputerDto.Name, updatedComputer.Name);
             Assert.AreEqual(updateComputerDto.Description, updatedComputer.Description);
@@ -148,12 +148,12 @@ namespace ComputerStoreTests.Tests
                 Price = 1500,
                 ImageFilename = "test.png"
             });
-            ComputerInfoDto computerInfoDto = computersController.GetComputerInfo("TestComputer");
+            ComputerInfoDto computerInfoDto = computersController.FindComputerByName("TestComputer");
 
             managementController.DeleteComputer(computerInfoDto.Id);
 
             Exception exception = Assert.Throws<Exception>(() => computersController.GetComputerInfo("TestComputer"));
-            Assert.AreEqual("Computer not found, name: TestComputer", exception.Message);
+            Assert.AreEqual("Computer not found, Id: TestComputer", exception.Message);
         }
 
         //Delete Order

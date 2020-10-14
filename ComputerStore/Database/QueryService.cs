@@ -12,7 +12,7 @@ namespace ComputerStore.Database
             return DatabaseContext.GetEntities().Computers;
         }
 
-        public static Computer FindComputer(string computerName)
+        public static Computer FindComputerByName(string computerName)
         {
             var entities = DatabaseContext.GetEntities();
             var query = from computer in entities.Computers

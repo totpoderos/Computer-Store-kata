@@ -15,7 +15,7 @@ namespace ComputerStoreTests.Tests
         public void Create_new_order_with_one_computer()
         {
             ComputersController computersController = new ComputersController();
-            ComputerInfoDto computerInfoDto = computersController.GetComputerInfo("MacBook Pro 15");
+            ComputerInfoDto computerInfoDto = computersController.FindComputerByName("MacBook Pro 15");
             OrdersController ordersController = new OrdersController();
             int computerQuantity = 1;
             Decimal expectedPrice = computerInfoDto.Price;
@@ -60,7 +60,7 @@ namespace ComputerStoreTests.Tests
         public void Raise_an_error_when_creating_new_order_with_negative_quantity()
         {
             ComputersController computersController = new ComputersController();
-            ComputerInfoDto computerInfoDto = computersController.GetComputerInfo("MacBook Pro 15");
+            ComputerInfoDto computerInfoDto = computersController.FindComputerByName("MacBook Pro 15");
             OrdersController ordersController = new OrdersController();
             NewOrderDto newOrderDto = new NewOrderDto
             {
@@ -74,10 +74,10 @@ namespace ComputerStoreTests.Tests
         }
         
         [Test]
-        public void Add_computer_to_existing_order()
+        public void Add_second_computer_to_existing_order()
         {
             ComputersController computersController = new ComputersController();
-            ComputerInfoDto computerInfoDto = computersController.GetComputerInfo("MacBook Pro 15");
+            ComputerInfoDto computerInfoDto = computersController.FindComputerByName("MacBook Pro 15");
             Decimal expectedPrice = computerInfoDto.Price;
             OrdersController ordersController = new OrdersController();
             NewOrderDto newOrderDto = new NewOrderDto
@@ -87,7 +87,7 @@ namespace ComputerStoreTests.Tests
             NewOrderIdDto newOrderIdDto = ordersController.CreateNewOrder(newOrderDto);
             Assert.IsNotNull(newOrderIdDto);
 
-            ComputerInfoDto secondComputerInfoDto = computersController.GetComputerInfo("iMac 27");
+            ComputerInfoDto secondComputerInfoDto = computersController.FindComputerByName("iMac 27");
             expectedPrice += secondComputerInfoDto.Price * 2;
             ordersController.AddComputerToOrder(newOrderIdDto.Id, new AddComputersToOrderDto
             {
@@ -105,7 +105,7 @@ namespace ComputerStoreTests.Tests
         public void Adding_existing_computer_to_existing_order_increases_OrderLine_quantity()
         {
             ComputersController computersController = new ComputersController();
-            ComputerInfoDto computerInfoDto = computersController.GetComputerInfo("MacBook Pro 15");
+            ComputerInfoDto computerInfoDto = computersController.FindComputerByName("MacBook Pro 15");
             Decimal expectedPrice = computerInfoDto.Price;
             OrdersController ordersController = new OrdersController();
             NewOrderDto newOrderDto = new NewOrderDto
@@ -115,7 +115,7 @@ namespace ComputerStoreTests.Tests
             NewOrderIdDto newOrderIdDto = ordersController.CreateNewOrder(newOrderDto);
             Assert.IsNotNull(newOrderIdDto);
 
-            ComputerInfoDto secondComputerInfoDto = computersController.GetComputerInfo("MacBook Pro 15");
+            ComputerInfoDto secondComputerInfoDto = computersController.GetComputerInfo(computerInfoDto.Id);
             expectedPrice += secondComputerInfoDto.Price;
             ordersController.AddComputerToOrder(newOrderIdDto.Id, new AddComputersToOrderDto
             {
@@ -132,7 +132,7 @@ namespace ComputerStoreTests.Tests
         public void Raise_an_error_when_adding_a_non_existing_computer_to_existing_order()
         {
             ComputersController computersController = new ComputersController();
-            ComputerInfoDto computerInfoDto = computersController.GetComputerInfo("MacBook Pro 15");
+            ComputerInfoDto computerInfoDto = computersController.FindComputerByName("MacBook Pro 15");
             OrdersController ordersController = new OrdersController();
             NewOrderDto newOrderDto = new NewOrderDto
             {
@@ -154,7 +154,7 @@ namespace ComputerStoreTests.Tests
         public void Raise_an_error_when_adding_a_computer_to_existing_order_with_negative_quantity()
         {
             ComputersController computersController = new ComputersController();
-            ComputerInfoDto computerInfoDto = computersController.GetComputerInfo("MacBook Pro 15");
+            ComputerInfoDto computerInfoDto = computersController.FindComputerByName("MacBook Pro 15");
             OrdersController ordersController = new OrdersController();
             NewOrderDto newOrderDto = new NewOrderDto
             {

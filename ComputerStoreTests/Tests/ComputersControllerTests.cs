@@ -28,7 +28,7 @@ namespace ComputerStoreTests.Tests
             ComputersController computersController = new ComputersController();
             string computerName = "MacBook Pro 15";
 
-            ComputerInfoDto computer = computersController.GetComputerInfo(computerName);
+            ComputerInfoDto computer = computersController.FindComputerByName(computerName);
             
             Assert.AreEqual(computerName, computer.Name);
             Assert.AreEqual("Macbook pro 15' Description", computer.Description);
@@ -41,8 +41,11 @@ namespace ComputerStoreTests.Tests
             ComputersController computersController = new ComputersController();
             string computerName = "Unknown";
 
-            Exception exception = Assert.Throws<Exception>( () => computersController.GetComputerInfo(computerName));
+            Exception exception = Assert.Throws<Exception>( () => computersController.FindComputerByName(computerName));
             Assert.AreEqual("Computer not found, name: Unknown", exception.Message);
+
+            exception = Assert.Throws<Exception>( () => computersController.GetComputerInfo("unknownid"));
+            Assert.AreEqual("Computer not found, Id: unknownid", exception.Message);
         }
         
         [Test]
@@ -53,7 +56,7 @@ namespace ComputerStoreTests.Tests
             string expectedSecondLineImageContent = "        " + " *    * " + "        " + "        " + "        " +
                                                    " ****** " + " ********";
 
-            ComputerInfoDto computerInfo = computersController.GetComputerInfo(computerName);
+            ComputerInfoDto computerInfo = computersController.FindComputerByName(computerName);
 
             ComputerImageInfoDto imageInfo = computersController.GetComputerImage(computerInfo.Id);
 

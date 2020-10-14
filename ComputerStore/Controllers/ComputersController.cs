@@ -14,9 +14,16 @@ namespace ComputerStore.Controllers
             computers.ForEach(computer => computersDtos.Add(TransformationService.ComputerToResponseComputerDto(computer)));
             return computersDtos;
         }
-        public ComputerInfoDto GetComputerInfo(string name)
+        public ComputerInfoDto GetComputerInfo(string id)
         {
-            var computer = QueryService.FindComputer(name);
+            var computer = QueryService.FindComputerByGuid(id);
+            if (computer == null) throw new Exception("Computer not found, Id: " + id);
+            return TransformationService.ComputerToResponseComputerDto(computer);
+        }
+
+        public ComputerInfoDto FindComputerByName(string name)
+        {
+            var computer = QueryService.FindComputerByName(name);
             if (computer == null) throw new Exception("Computer not found, name: " + name);
             return TransformationService.ComputerToResponseComputerDto(computer);
         }
