@@ -65,7 +65,7 @@ namespace ComputerStore.Controllers
         {
             AuthenticationService.AuthenticateRoot(_username, _password);
             ValidationService.ValidatedNewUserDto(newUserDto);
-            if (QueryService.FinsUserByUsername(newUserDto.Username) != null) 
+            if (QueryService.FindUserByUsername(newUserDto.Username) != null) 
                 throw new Exception("Cannot create user. Username is duplicate. Username: " + newUserDto.Username);
             User user = TransformationService.NewUserDtoToUser(newUserDto);
             Entities entities = DatabaseContext.GetEntities();

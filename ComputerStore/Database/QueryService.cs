@@ -39,10 +39,10 @@ namespace ComputerStore.Database
             return query.FirstOrDefault();
         }
 
-        public static List<Order> GetAllOrders()
+        public static List<Order> GetAllOrders(User user)
         {
             var entities = DatabaseContext.GetEntities();
-            return entities.Orders;
+            return entities.Orders.FindAll(order => order.User.Username.Equals(user.Username));
         }
 
         public static User FindUserById(string userId)
@@ -54,7 +54,7 @@ namespace ComputerStore.Database
             return query.FirstOrDefault();
         }
 
-        public static User FinsUserByUsername(string username)
+        public static User FindUserByUsername(string username)
         {
             var entities = DatabaseContext.GetEntities();
             var query = from user in entities.Users

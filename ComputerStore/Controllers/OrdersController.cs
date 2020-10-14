@@ -11,14 +11,24 @@ namespace ComputerStore.Controllers
 {
     public class OrdersController
     {
+        private readonly string _username;
+        private readonly string _password;
+        
+        public OrdersController(string username, string password)
+        {
+            _username = username;
+            _password = password;
+        }
         public NewOrderIdDto CreateNewOrder(NewOrderDto newOrderDto)
         {
+            User user = AuthenticationService.AuthenticateUser(_username, _password);
             ValidationService.ValidateNewOrderDto(newOrderDto);
             Order order = new Order()
             {
                 Guid = Guid.NewGuid().ToString(),
                 Date = DateTime.Now,
                 OrderLines = newOrderDto.OrderLines.Select(TransformationService.NewOrderLineDtoToOrderLine).ToList(),
+                User = user
             };
             
             Entities entities = DatabaseContext.GetEntities();
@@ -31,16 +41,13 @@ namespace ComputerStore.Controllers
         }
         public void AddComputerToOrder(string orderId, AddComputersToOrderDto computersToOrderDto)
         {
+            User user = AuthenticationService.AuthenticateUser(_username, _password);
             ValidationService.ValidateAddComputersToOrderDto(computersToOrderDto);
             Order order = QueryService.FindOrder(orderId);
+            if (!order.User.Username.Equals(user.Username))
+                throw new Exception("Order doesn't belong to user. User: " + _username);
             Entities entities = DatabaseContext.GetEntities();
-            if (order == null)
-            {
-                order = new Order { Guid = orderId};
-                order.OrderLines =  new List<OrderLine>();
-                entities.Orders.Add(order);
-            }
-            
+
             foreach (var orderLineDto in computersToOrderDto.OrderLines)
             {
                 OrderLine orderLine =
@@ -55,14 +62,18 @@ namespace ComputerStore.Controllers
 
         public List<OrderInformationDto> All()
         {
-            List<Order> orders = QueryService.GetAllOrders();
+            User user = AuthenticationService.AuthenticateUser(_username, _password);
+            List<Order> orders = QueryService.GetAllOrders(user);
             return orders.Select(TransformationService.OrderToOrderInformationDto).ToList();
         }
 
         public OrderInformationDto GetOrderInformation(string orderId)
         {
+            User user = AuthenticationService.AuthenticateUser(_username, _password);
             Order order = QueryService.FindOrder(orderId);
             if (order == null) throw new Exception($"Order not found. Id: {orderId}");
+            if (!order.User.Username.Equals(user.Username))
+                throw new Exception("Order doesn't belong to user. User: " + _username);
             return TransformationService.OrderToOrderInformationDto(order);
         }
     }

@@ -11,12 +11,19 @@ namespace ComputerStoreTests.Tests
     [TestFixture]
     public class OrdersControllerTests
     {
+        private OrdersController ordersController;
+
+        [SetUp]
+        public void Setup()
+        {
+            ordersController = new OrdersController("emilybeck", "password1");
+        }
+        
         [Test]
         public void Create_new_order_with_one_computer()
         {
             ComputersController computersController = new ComputersController();
             ComputerInfoDto computerInfoDto = computersController.FindComputerByName("MacBook Pro 15");
-            OrdersController ordersController = new OrdersController();
             int computerQuantity = 1;
             Decimal expectedPrice = computerInfoDto.Price;
             
@@ -44,8 +51,6 @@ namespace ComputerStoreTests.Tests
         [Test]
         public void Raise_an_error_when_creating_new_order_with_non_existing_computer()
         {
-            OrdersController ordersController = new OrdersController();
-            
             NewOrderDto newOrderDto = new NewOrderDto
             {
                 OrderLines = new List<NewOrderLineDto> { new NewOrderLineDto { ComputerId = "Unknown", Quantity = 1}},
@@ -61,7 +66,6 @@ namespace ComputerStoreTests.Tests
         {
             ComputersController computersController = new ComputersController();
             ComputerInfoDto computerInfoDto = computersController.FindComputerByName("MacBook Pro 15");
-            OrdersController ordersController = new OrdersController();
             NewOrderDto newOrderDto = new NewOrderDto
             {
                 OrderLines = new List<NewOrderLineDto> { new NewOrderLineDto { ComputerId = computerInfoDto.Id, Quantity = -1}}
@@ -79,7 +83,6 @@ namespace ComputerStoreTests.Tests
             ComputersController computersController = new ComputersController();
             ComputerInfoDto computerInfoDto = computersController.FindComputerByName("MacBook Pro 15");
             Decimal expectedPrice = computerInfoDto.Price;
-            OrdersController ordersController = new OrdersController();
             NewOrderDto newOrderDto = new NewOrderDto
             {
                 OrderLines = new List<NewOrderLineDto> { new NewOrderLineDto { ComputerId = computerInfoDto.Id, Quantity = 1}}
@@ -107,7 +110,6 @@ namespace ComputerStoreTests.Tests
             ComputersController computersController = new ComputersController();
             ComputerInfoDto computerInfoDto = computersController.FindComputerByName("MacBook Pro 15");
             Decimal expectedPrice = computerInfoDto.Price;
-            OrdersController ordersController = new OrdersController();
             NewOrderDto newOrderDto = new NewOrderDto
             {
                 OrderLines = new List<NewOrderLineDto> { new NewOrderLineDto { ComputerId = computerInfoDto.Id, Quantity = 1}},
@@ -133,7 +135,6 @@ namespace ComputerStoreTests.Tests
         {
             ComputersController computersController = new ComputersController();
             ComputerInfoDto computerInfoDto = computersController.FindComputerByName("MacBook Pro 15");
-            OrdersController ordersController = new OrdersController();
             NewOrderDto newOrderDto = new NewOrderDto
             {
                 OrderLines = new List<NewOrderLineDto> { new NewOrderLineDto { ComputerId = computerInfoDto.Id, Quantity = 1}},
@@ -155,7 +156,6 @@ namespace ComputerStoreTests.Tests
         {
             ComputersController computersController = new ComputersController();
             ComputerInfoDto computerInfoDto = computersController.FindComputerByName("MacBook Pro 15");
-            OrdersController ordersController = new OrdersController();
             NewOrderDto newOrderDto = new NewOrderDto
             {
                 OrderLines = new List<NewOrderLineDto> { new NewOrderLineDto { ComputerId = computerInfoDto.Id, Quantity = 1}},

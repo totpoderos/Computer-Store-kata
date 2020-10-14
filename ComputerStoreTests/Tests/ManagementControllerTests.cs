@@ -168,8 +168,7 @@ namespace ComputerStoreTests.Tests
                     new NewOrderLineDto {ComputerId = imacId, Quantity = 2}
                 }
             };
-            OrdersController ordersController = new OrdersController();
-            List<OrderInformationDto> previousAllOrders = ordersController.All();
+            OrdersController ordersController = new OrdersController("emilybeck", "password1");
             NewOrderIdDto orderIdDto = ordersController.CreateNewOrder(newOrderDto);
             Assert.IsTrue(ordersController.All().Exists(order => order.OrderId.Equals(orderIdDto.Id)));
 
