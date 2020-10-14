@@ -25,7 +25,7 @@ namespace ComputerStore.Database
         {
             var entities = DatabaseContext.GetEntities();
             var query = from computer in entities.Computers
-                where computer.Guid.ToUpper() == guid.ToUpper()
+                where computer.Guid.ToUpper().Equals(guid.ToUpper())
                 select computer;
             return query.FirstOrDefault();
         }

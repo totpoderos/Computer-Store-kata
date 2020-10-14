@@ -19,7 +19,29 @@ namespace ComputerStore.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine("Error: " + ex.Message);
+                throw ex;
             }
+        }
+
+        public void UpdateComputer(string computerId, UpdateComputerDto updateComputerDto)
+        {
+            ValidationService.ValidateUpdateComputerDto(updateComputerDto);
+            Computer computer = QueryService.FindComputerByGuid(computerId);
+            if (computer == null) throw new Exception("Computer not found. Id: " + computerId);
+            computer.Name = updateComputerDto.Name;
+            computer.Description = updateComputerDto.Description;
+            computer.Price = updateComputerDto.Price;
+            computer.ImageFilename = updateComputerDto.ImageFilename;
+            DatabaseContext.GetEntities().Save();
+        }
+
+        public void DeleteComputer(string computerId)
+        {
+            Computer computer = QueryService.FindComputerByGuid(computerId);
+            if (computer == null) throw new Exception("Computer not found. Id: " + computerId);
+            Entities entities = DatabaseContext.GetEntities();
+            entities.Computers.Remove(computer);
+            entities.Save();
         }
     }
 }

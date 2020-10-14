@@ -17,7 +17,8 @@ namespace ComputerStore
                 Id = computer.Guid,
                 Name = computer.Name,
                 Description = computer.Description,
-                Price = computer.Price
+                Price = computer.Price,
+                ImageFilename = computer.ImageFilename
             };
         }
 
@@ -25,7 +26,7 @@ namespace ComputerStore
         {
             return new Computer
             {
-                Guid = addComputerDto.Id,
+                Guid = Guid.NewGuid().ToString(),
                 Name = addComputerDto.Name,
                 Description = addComputerDto.Description,
                 Price = addComputerDto.Price,
