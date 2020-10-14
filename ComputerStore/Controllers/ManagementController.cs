@@ -9,8 +9,18 @@ namespace ComputerStore.Controllers
 {
     public class ManagementController
     {
+        private readonly string _username;
+        private readonly string _password;
+
+        public ManagementController(string username, string password)
+        {
+            _username = username;
+            _password = password;
+        }
+        
         public void AddComputer(AddComputerDto addComputerDto)
         {
+            AuthenticationService.AuthenticateRoot(_username, _password);
             ValidationService.ValidateRequestComputerDto(addComputerDto);
             Computer computer = TransformationService.RequestComputerToComputerDto(addComputerDto);
             var entities = DatabaseContext.GetEntities();
@@ -20,6 +30,7 @@ namespace ComputerStore.Controllers
 
         public void UpdateComputer(string computerId, UpdateComputerDto updateComputerDto)
         {
+            AuthenticationService.AuthenticateRoot(_username, _password);
             ValidationService.ValidateUpdateComputerDto(updateComputerDto);
             Computer computer = QueryService.FindComputerByGuid(computerId);
             if (computer == null) throw new Exception("Computer not found. Id: " + computerId);
@@ -32,6 +43,7 @@ namespace ComputerStore.Controllers
 
         public void DeleteComputer(string computerId)
         {
+            AuthenticationService.AuthenticateRoot(_username, _password);
             Computer computer = QueryService.FindComputerByGuid(computerId);
             if (computer == null) throw new Exception("Computer not found. Id: " + computerId);
             Entities entities = DatabaseContext.GetEntities();
@@ -41,6 +53,7 @@ namespace ComputerStore.Controllers
 
         public void DeleteOrder(string orderId)
         {
+            AuthenticationService.AuthenticateRoot(_username, _password);
             Order order = QueryService.FindOrder(orderId);
             if (order == null) throw new Exception("Order not found. Id: " + orderId);
             Entities entities = DatabaseContext.GetEntities();
@@ -50,6 +63,7 @@ namespace ComputerStore.Controllers
 
         public NewUserIdDto CreateUser(NewUserDto newUserDto)
         {
+            AuthenticationService.AuthenticateRoot(_username, _password);
             ValidationService.ValidatedNewUserDto(newUserDto);
             if (QueryService.FinsUserByUsername(newUserDto.Username) != null) 
                 throw new Exception("Cannot create user. Username is duplicate. Username: " + newUserDto.Username);
@@ -62,6 +76,7 @@ namespace ComputerStore.Controllers
 
         public UserInfoDto GetUser(string userId)
         {
+            AuthenticationService.AuthenticateRoot(_username, _password);
             User user = QueryService.FindUserById(userId);
             if (user == null) throw new Exception("User not found. Id: " + userId);
             return TransformationService.UserToUserInfoDto(user);
@@ -69,6 +84,7 @@ namespace ComputerStore.Controllers
 
         public void UpdateUser(string userId, UpdateUserDto updatedUserDto)
         {
+            AuthenticationService.AuthenticateRoot(_username, _password);
             ValidationService.ValidateUpdateUserDto(updatedUserDto);
             User user = QueryService.FindUserById(userId);
             if (user == null) throw new Exception("User not found. Id: " + userId);
@@ -83,6 +99,7 @@ namespace ComputerStore.Controllers
 
         public void DeleteUser(string userId)
         {
+            AuthenticationService.AuthenticateRoot(_username, _password);
             User user = QueryService.FindUserById(userId);
             if (user == null) throw new Exception("User not found. Id: " + userId);
             Entities entities = DatabaseContext.GetEntities();

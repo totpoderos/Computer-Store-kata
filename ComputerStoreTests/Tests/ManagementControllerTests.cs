@@ -5,6 +5,7 @@ using ComputerStore.Controllers;
 using ComputerStore.Controllers.Request;
 using ComputerStore.Controllers.Response;
 using ComputerStore.Domain;
+using Microsoft.VisualBasic.CompilerServices;
 using NUnit.Framework;
 
 namespace ComputerStoreTests.Tests
@@ -12,13 +13,19 @@ namespace ComputerStoreTests.Tests
     [TestFixture]
     public class ManagementControllerTests
     {
+        private ManagementController managementController;
+
+        [SetUp]
+        public void Setup()
+        {
+            managementController = new ManagementController("root", "administrator");
+        }
         //Create computer
         [Test]
         public void Create_new_computer()
         {
             ComputersController computersController = new ComputersController();
             int numberOfComputers = computersController.All().Count;
-            ManagementController managementController = new ManagementController();
 
             managementController.AddComputer(new AddComputerDto
             {
@@ -37,8 +44,6 @@ namespace ComputerStoreTests.Tests
         [Test]
         public void Raise_an_error_when_creating_a_computer_with_empty_name()
         {
-            ManagementController managementController = new ManagementController();
-
             Exception exception = Assert.Throws<Exception>(() =>
                 managementController.AddComputer(new AddComputerDto
                 {
@@ -54,8 +59,6 @@ namespace ComputerStoreTests.Tests
         [Test]
         public void Raise_an_error_when_creating_a_computer_with_empty_description()
         {
-            ManagementController managementController = new ManagementController();
-
             Exception exception = Assert.Throws<Exception>(() =>
                 managementController.AddComputer(new AddComputerDto
                 {
@@ -71,8 +74,6 @@ namespace ComputerStoreTests.Tests
         [Test]
         public void Raise_an_error_when_creating_a_computer_with_empty_filename()
         {
-            ManagementController managementController = new ManagementController();
-
             Exception exception = Assert.Throws<Exception>(() =>
                 managementController.AddComputer(new AddComputerDto
                 {
@@ -88,8 +89,6 @@ namespace ComputerStoreTests.Tests
         [Test]
         public void Raise_an_error_when_creating_a_computer_with_negative_price()
         {
-            ManagementController managementController = new ManagementController();
-
             Exception exception = Assert.Throws<Exception>(() =>
                 managementController.AddComputer(new AddComputerDto
                 {
@@ -107,8 +106,6 @@ namespace ComputerStoreTests.Tests
         public void Update_computer_name()
         {
             ComputersController computersController = new ComputersController();
-            ManagementController managementController = new ManagementController();
-
             managementController.AddComputer(new AddComputerDto
             {
                 Name = "TestComputer",
@@ -141,7 +138,6 @@ namespace ComputerStoreTests.Tests
         public void Delete_computer()
         {
             ComputersController computersController = new ComputersController();
-            ManagementController managementController = new ManagementController();
             managementController.AddComputer(new AddComputerDto
             {
                 Name = "TestComputer",
@@ -176,7 +172,6 @@ namespace ComputerStoreTests.Tests
             List<OrderInformationDto> previousAllOrders = ordersController.All();
             NewOrderIdDto orderIdDto = ordersController.CreateNewOrder(newOrderDto);
             Assert.IsTrue(ordersController.All().Exists(order => order.OrderId.Equals(orderIdDto.Id)));
-            ManagementController managementController = new ManagementController();
 
             managementController.DeleteOrder(orderIdDto.Id);
 
@@ -197,8 +192,6 @@ namespace ComputerStoreTests.Tests
                 Email = "unclebob@mail.com",
                 IsRoot = false
             };
-            ManagementController managementController = new ManagementController();
-
             NewUserIdDto newUserIdDto = managementController.CreateUser(newUserDto);
 
             Assert.IsNotNull(newUserIdDto);
@@ -232,7 +225,6 @@ namespace ComputerStoreTests.Tests
                 Email = "johnsmith@mail.com",
                 IsRoot = false
             };
-            ManagementController managementController = new ManagementController();
             NewUserIdDto newUserIdDto = managementController.CreateUser(newUserDto);
 
             Exception exception = Assert.Throws<Exception>(() => managementController.CreateUser(duplicatedUserDto));
@@ -262,7 +254,6 @@ namespace ComputerStoreTests.Tests
                 Email = "johnsmith@mail.com",
                 IsRoot = true
             };
-            ManagementController managementController = new ManagementController();
             NewUserIdDto newUserIdDto = managementController.CreateUser(newUserDto);
 
             managementController.UpdateUser(newUserIdDto.Id, updatedUserDto);
@@ -288,7 +279,6 @@ namespace ComputerStoreTests.Tests
                 Email = "martinfowler@mail.com",
                 IsRoot = false
             };
-            ManagementController managementController = new ManagementController();
             NewUserIdDto newUserIdDto = managementController.CreateUser(newUserDto);
 
             managementController.DeleteUser(newUserIdDto.Id);
