@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ComputerStore
+namespace ComputerStore.Services
 {
     public static class ImageService
     {

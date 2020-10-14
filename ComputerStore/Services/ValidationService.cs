@@ -1,11 +1,8 @@
 using System;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using ComputerStore.Controllers.Request;
-using ComputerStore.Controllers.Response;
-using ComputerStore.Domain;
 
-namespace ComputerStore
+namespace ComputerStore.Services
 {
     public class ValidationService
     {

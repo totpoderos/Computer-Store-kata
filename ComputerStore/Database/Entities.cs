@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using ComputerStore.Domain;
+using ComputerStore.Services;
 
 namespace ComputerStore.Database
 {

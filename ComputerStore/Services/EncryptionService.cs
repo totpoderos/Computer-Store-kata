@@ -2,9 +2,9 @@ using System;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace ComputerStore
+namespace ComputerStore.Services
 {
-    public class EncryptionService
+    public static class EncryptionService
     {
         public static string HashPassword(string password)
         {

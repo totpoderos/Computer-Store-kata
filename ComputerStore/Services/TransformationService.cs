@@ -1,12 +1,11 @@
 using System;
 using System.Linq;
-using ComputerStore.Controllers;
 using ComputerStore.Controllers.Request;
 using ComputerStore.Controllers.Response;
 using ComputerStore.Database;
 using ComputerStore.Domain;
 
-namespace ComputerStore
+namespace ComputerStore.Services
 {
     public static class TransformationService
     {
