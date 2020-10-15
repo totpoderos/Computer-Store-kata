@@ -9,9 +9,9 @@ Some challenges:
 
 This kata was developed in c# for dotnet core but it will probably work on .net framework and can be easily translated to other OOP languages like Java. 
 
-The project is intended to be technology agnostic. Dependencies on frameworks like web or database where removed so no complex setup is needed.
+The project is intended to be technology agnostic. Dependencies on frameworks like web or database were removed so no complex setup is needed.
 
-Controllers are not real controllers, are just regular classes with public methods that can be invoked from tests. Authentication is acomplished by passing user credentials on controllers constructors since Request object is not available
+Controllers are not real controllers, are just regular classes with public methods that can be invoked from tests. Authentication is acomplished by passing user credentials to controllers constructors since Request object is not available
 
 Database is an in-memory database implementation with Entity Framework or ORM flavour (apologies to ORM developers).
 
