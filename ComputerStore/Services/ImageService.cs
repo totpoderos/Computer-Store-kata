@@ -6,191 +6,84 @@ namespace ComputerStore.Services
 {
     public static class ImageService
     {
+        //https://github.com/electricimp/reference/blob/master/hardware/MAX7219/MAX7219%20Matrix%20LED
         private const int CharSizey = 8;
 
-        private static Dictionary<char, string[]> chars = new Dictionary<char, string[]>
+        private static readonly Dictionary<char, int[]> asciiTable = new Dictionary<char, int[]>
         {
-            {' ', new[]
-            {
-                "        ",
-                "        ",
-                "        ",
-                "        ",
-                "        ",
-                "        ",
-                "        ",
-                "        "
-            }},
-            {'i', new[]
-            {
-                "        ",
-                "        ",
-                "   *    ",
-                "  **    ",
-                "   *    ",
-                "   *    ",
-                "   *    ",
-                "  ***   "
-            }},
-            {'M', new[]
-            {
-                "        ",
-                " *    * ",
-                " **  ** ",
-                " * ** * ",
-                " *    * ",
-                " *    * ",
-                " *    * ",
-                " *    * "
-            }},
-            {'a', new[]
-            {
-                "        ",
-                "        ",
-                " *****  ",
-                "      * ",
-                " ****** ",
-                " *    * ",
-                " *    * ",
-                " ***** *"
-            }},
-            {'c', new[]
-            {
-                "        ",
-                "        ",
-                "  ****  ",
-                " *    * ",
-                " *      ", 
-                " *      ",
-                " *    * ",
-                "  ****  "
-            }},
-            {'r', new[]
-            {
-                "        ",
-                "        ",
-                " *** ** ",
-                "  ** *** ",
-                "  *** **", 
-                "  **    ",
-                "  **    ",
-                " ****   "
-            }},
-            {'B', new[]
-            {
-                "        ",
-                " ****** ",
-                " *     *",
-                " *     *",
-                " * **** ", 
-                " *     *",
-                " *     *",
-                " ****** "
-            }},
-            {'P', new[]
-            {
-                "        ",
-                " ****** ",
-                " *     *",
-                " *     *",
-                " * **** ", 
-                " *      ",
-                " *      ",
-                " *      "
-            }},
-            {'k', new[]
-            {
-                "        ",
-                "        ",
-                " *     *",
-                " *    * ",
-                " * **   ", 
-                " *   *  ",
-                " *    * ",
-                " *     * "
-            }},
-            {'o', new[]
-            {
-                "        ",
-                "        ",
-                " ****** ",
-                " *    * ",
-                " *    * ", 
-                " *    * ",
-                " *    * ",
-                " ****** "
-            }},
-            {'1', new[]
-            {
-                "        ",
-                "     *  ",
-                "    **  ",
-                "  ****  ",
-                "    **  ", 
-                "    **  ",
-                "    **  ",
-                "  ******"
-            }},
-            {'2', new[]
-            {
-                "        ",
-                " ****** ",
-                "**    **",
-                "*   **  ", 
-                "   **   ",
-                "  **    ",
-                " **   **",
-                " *******"
-            }},
-            {'3', new[]
-            {
-                "        ",
-                " ****** ",
-                "**    **",
-                "      **",
-                "    **  ",
-                "      **", 
-                "**    **",
-                " ****** "
-            }},
-            {'5', new[]
-            {
-                "         ",
-                " ******* ",
-                " **      ",
-                " **      ",
-                " ******  ",
-                "      **  ",
-                " **   ** ",
-                "  *****  ", 
-            }},
-            {'7', new[]
-            {
-                "         ",
-                " ********",
-                " **    **",
-                "       **",
-                "      ** ",
-                "     **  ",
-                "    **   ",
-                "    **   ", 
-            }},
-            
+            {'0', new[] {0x0,0x3C,0x46,0x4A,0x52,0x62,0x3C,0x0} },
+            {'1', new[] {0x0,0x30,0x50,0x10,0x10,0x10,0x7C,0x0} },
+            {'2', new[] {0x0,0x3C,0x42,0x2,0x3C,0x40,0x7E,0x0} },
+            {'3', new[] {0x0,0x3C,0x42,0xC,0x2,0x42,0x3C,0x0} },
+            {'4', new[] {0x0,0x8,0x18,0x28,0x48,0x7E,0x8,0x0} },
+            {'5', new[] {0x0,0x7E,0x40,0x7C,0x2,0x42,0x3C,0x0} },
+            {'6', new[] {0x0,0x3C,0x40,0x7C,0x42,0x42,0x3C,0x0} },
+            {'7', new[] {0x0,0x7E,0x2,0x4,0x8,0x10,0x10,0x0} },
+            {'8', new[] {0x0,0x3C,0x42,0x3C,0x42,0x42,0x3C,0x0} },
+            {'9', new[] {0x0,0x3C,0x42,0x42,0x3E,0x2,0x3C,0x0} },
+            {'A', new[] {0x0,0x3C,0x42,0x42,0x7E,0x42,0x42,0x0}},
+            {'B', new[] {0x0,0x7C,0x42,0x7C,0x42,0x42,0x7C,0x0}},
+            {'C', new[] {0x0,0x3C,0x42,0x40,0x40,0x42,0x3C,0x0}},
+            {'D', new[] {0x0,0x78,0x44,0x42,0x42,0x44,0x78,0x0}},
+            {'E', new[] {0x0,0x7E,0x40,0x7C,0x40,0x40,0x7E,0x0}},
+            {'F', new[] {0x0,0x7E,0x40,0x7C,0x40,0x40,0x40,0x0}},
+            {'G', new[] {0x0,0x3C,0x42,0x40,0x4E,0x42,0x3C,0x0}},
+            {'H', new[] {0x0,0x42,0x42,0x7E,0x42,0x42,0x42,0x0}},
+            {'I', new[] {0x0,0x7C,0x10,0x10,0x10,0x10,0x7C,0x0}},
+            {'J', new[] {0x0,0x2,0x2,0x2,0x2,0x42,0x3C,0x0}},
+            {'K', new[] {0x0,0x44,0x48,0x70,0x48,0x44,0x42,0x0}},
+            {'L', new[] {0x0,0x40,0x40,0x40,0x40,0x40,0x7E,0x0}},
+            {'M', new[] {0x0,0x42,0x66,0x5A,0x42,0x42,0x42,0x0}},
+            {'N', new[] {0x0,0x42,0x62,0x52,0x4A,0x46,0x42,0x0}},
+            {'O', new[] {0x0,0x3C,0x42,0x42,0x42,0x42,0x3C,0x0}},
+            {'P', new[] {0x0,0x7C,0x42,0x42,0x7C,0x40,0x40,0x0}},
+            {'Q', new[] {0x0,0x3C,0x42,0x42,0x52,0x4A,0x3C,0x0}},
+            {'R', new[] {0x0,0x7C,0x42,0x42,0x7C,0x44,0x42,0x0}},
+            {'S', new[] {0x0,0x3C,0x40,0x3C,0x2,0x42,0x3C,0x0}},
+            {'T', new[] {0x0,0x7C,0x10,0x10,0x10,0x10,0x10,0x0}},
+            {'U', new[] {0x0,0x42,0x42,0x42,0x42,0x42,0x3C,0x0}},
+            {'V', new[] {0x0,0x42,0x42,0x42,0x42,0x24,0x18,0x0}},
+            {'W', new[] {0x0,0x42,0x42,0x42,0x42,0x5A,0x24,0x0}},
+            {'X', new[] {0x0,0x42,0x24,0x18,0x18,0x24,0x42,0x0}},
+            {'Y', new[] {0x0,0x44,0x28,0x10,0x10,0x10,0x10,0x0}},
+            {'Z', new[] {0x0,0x7E,0x4,0x8,0x10,0x20,0x7E,0x0}},
+            {' ', new[] {0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0}},
+            {'a', new[] {0x0,0x0,0x38,0x4,0x3C,0x44,0x3C,0x0}},
+            {'b', new[] {0x0,0x40,0x40,0x78,0x44,0x44,0x78,0x0}},
+            {'c', new[] {0x0,0x0,0x38,0x40,0x40,0x40,0x38,0x0}},	
+            {'d', new[] {0x0,0x4,0x4,0x3C,0x44,0x44,0x3C,0x0}},	
+            {'e', new[] {0x0,0x0,0x38,0x44,0x78,0x40,0x3C,0x0}},	
+            {'f', new[] {0x0,0x30,0x40,0x60,0x40,0x40,0x40,0x0}},
+            {'g', new[] {0x0,0x3C,0x44,0x44,0x3C,0x4,0x38,0x0}},	
+            {'h', new[] {0x0,0x40,0x40,0x40,0x78,0x44,0x44,0x0}},
+            {'i', new[] {0x0,0x20,0x0,0x60,0x20,0x20,0x70,0x0}},	
+            {'j', new[] {0x0,0x8,0x0,0x8,0x8,0x48,0x30,0x0}},	
+            {'k', new[] {0x0,0x40,0x50,0x60,0x60,0x50,0x48,0x0}},
+            {'l', new[] {0x0,0x40,0x40,0x40,0x40,0x40,0x30,0x0}},
+            {'m', new[] {0x0,0x0,0x68,0x54,0x54,0x54,0x54,0x0}},	
+            {'n', new[] {0x0,0x0,0x78,0x44,0x44,0x44,0x44,0x0}}, 
+            {'o', new[] {0x0,0x0,0x38,0x44,0x44,0x44,0x38,0x0}},	
+            {'p', new[] {0x0,0x78,0x44,0x44,0x78,0x40,0x40,0x0}},
+            {'q', new[] {0x0,0x3C,0x44,0x44,0x3C,0x4,0x6,0x0}},	
+            {'r', new[] {0x0,0x0,0x1C,0x20,0x20,0x20,0x20,0x0}},	
+            {'s', new[] {0x0,0x0,0x38,0x40,0x38,0x4,0x78,0x0}},	
+            {'t', new[] {0x0,0x20,0x70,0x20,0x20,0x20,0x18,0x0}},
+            {'u', new[] {0x0,0x0,0x44,0x44,0x44,0x44,0x38,0x0}},	
+            {'v', new[] {0x0,0x0,0x44,0x44,0x28,0x28,0x10,0x0}},	
+            {'w', new[] {0x0,0x0,0x44,0x54,0x54,0x54,0x28,0x0}},	
+            {'x', new[] {0x0,0x0,0x44,0x28,0x10,0x28,0x44,0x0}},	
+            {'y', new[] {0x0,0x0,0x44,0x44,0x3C,0x4,0x38,0x0}},	
+            {'z', new[] {0x0,0x0,0x7C,0x8,0x10,0x20,0x7C,0x0}}	
         };
-        public static string[] TransformCharToDotMatrix(char character)
-        {
-            if (!chars.ContainsKey(character)) return null;
-            return chars[character].ToArray();
-        }
 
         public static List<string> TransformTextoToAsciiMatrix(string computerImageFilename)
         {
             List<string[]> charList = new List<string[]>();
-            computerImageFilename.ToCharArray().ToList().ForEach(c =>  charList.Add(TransformCharToDotMatrix(c)));
+            computerImageFilename.ToCharArray().ToList().ForEach(c =>  charList.Add(ConvertCharToWildcard(c).ToArray()));
             List<string> asciiList = new List<string>();
             for (int i = 0; i < CharSizey; i++)
             {
-                string line = String.Empty;
+                string line = string.Empty;
                 for (int j = 0; j < charList.Count; j++)
                 {
                     line += (charList[j])[i];
@@ -198,6 +91,27 @@ namespace ComputerStore.Services
                 asciiList.Add(line);
             }
             return asciiList;
+        }
+
+        private static string ConvertAsciiCodeToString(int code)
+        {
+            string result = "";
+            for (int i = 7; i >= 0; i--)
+            {
+                string wildcard = " ";
+                if ((code & 0x01) == 0x01) wildcard = "*";
+                if (code > 0) code >>= 1;
+                result = wildcard + result;
+            }
+            return result;
+        }
+
+        private static List<string> ConvertCharToWildcard(char character)
+        {
+            List<string> wildcardChar = new List<string>();
+            var asciiCodes = asciiTable[character];
+            asciiCodes.ToList().ForEach(code => wildcardChar.Add(ConvertAsciiCodeToString(code)));
+            return wildcardChar;
         }
     }
 }

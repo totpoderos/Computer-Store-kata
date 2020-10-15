@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ComputerStore.Controllers;
 using ComputerStore.Controllers.Response;
+using ComputerStore.Services;
 using NUnit.Framework;
 
 namespace ComputerStoreTests.Tests
@@ -53,14 +54,23 @@ namespace ComputerStoreTests.Tests
         {
             ComputersController computersController = new ComputersController();
             string computerName = "iMac 27";
-            string expectedSecondLineImageContent = "        " + " *    * " + "        " + "        " + "        " +
-                                                   " ****** " + " ********";
-
+            string [] expectedResult =
+            {
+                "                                                        ",
+                "  *      *    *                           ****   ****** ",
+                "         **  **   ***     ***            *    *       * ",
+                " **      * ** *      *   *                    *      *  ",
+                "  *      *    *   ****   *                ****      *   ",
+                "  *      *    *  *   *   *               *         *    ",
+                " ***     *    *   ****    ***            ******    *    ",
+                "                                                        "
+            };
             ComputerInfoDto computerInfo = computersController.FindComputerByName(computerName);
 
             ComputerImageInfoDto imageInfo = computersController.GetComputerImage(computerInfo.Id);
-
-            Assert.AreEqual(expectedSecondLineImageContent, imageInfo.Content[1]);
+            
+            imageInfo.Content.ForEach(Console.WriteLine);
+            Assert.AreEqual(expectedResult, imageInfo.Content);
         }
         
         [Test]
