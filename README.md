@@ -11,7 +11,7 @@ This kata was developed in c# for dotnet core but it will probably work on .net 
 
 The project is intended to be technology agnostic. Dependencies on frameworks like web or database where removed so no complex setup is needed.
 
-Controllers are not real controllers, are just regular classes with public methods that can be invoked from tests. Since Request object is not available authentication is acomplished by passing user credentials on controllers constructors.
+Controllers are not real controllers, are just regular classes with public methods that can be invoked from tests. Authentication is acomplished by passing user credentials on controllers constructors since Request object is not available
 
 Database is an in-memory database implementation with Entity Framework or ORM flavour (apologies to ORM developers).
 
