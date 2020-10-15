@@ -1,4 +1,4 @@
-# ComputerStore
+# Computer Store kata
 Practice your refactoring skills with Computer Store kata.
 
 Some challenges:
