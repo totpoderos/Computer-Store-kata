@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace ComputerStore.Controllers.Response
+namespace ComputerStore.Controllers.Response.Computer
 {
     public class ComputerImageInfoDto
     {

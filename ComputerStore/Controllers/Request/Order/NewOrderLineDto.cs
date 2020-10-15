@@ -1,6 +1,6 @@
-namespace ComputerStore.Controllers.Response
+namespace ComputerStore.Controllers.Request.Order
 {
-    public class OrderLineInfoDto
+    public class NewOrderLineDto
     {
         public string ComputerId { get; set; }
         public int Quantity { get; set; }

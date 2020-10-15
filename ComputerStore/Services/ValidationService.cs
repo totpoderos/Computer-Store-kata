@@ -1,6 +1,9 @@
 using System;
 using System.Linq;
 using ComputerStore.Controllers.Request;
+using ComputerStore.Controllers.Request.Computer;
+using ComputerStore.Controllers.Request.Order;
+using ComputerStore.Controllers.Request.User;
 
 namespace ComputerStore.Services
 {

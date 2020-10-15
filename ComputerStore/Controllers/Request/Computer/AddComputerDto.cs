@@ -1,6 +1,6 @@
-namespace ComputerStore.Controllers.Request
+namespace ComputerStore.Controllers.Request.Computer
 {
-    public class UpdateComputerDto
+    public class AddComputerDto
     {
         public string Name { get; set; }
         public string Description { get; set; }

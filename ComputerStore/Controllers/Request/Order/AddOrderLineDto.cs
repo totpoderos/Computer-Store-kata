@@ -1,4 +1,4 @@
-namespace ComputerStore.Controllers.Request
+namespace ComputerStore.Controllers.Request.Order
 {
     public class AddOrderLineDto
     {

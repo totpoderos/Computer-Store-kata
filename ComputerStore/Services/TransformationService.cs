@@ -1,7 +1,13 @@
 using System;
 using System.Linq;
 using ComputerStore.Controllers.Request;
+using ComputerStore.Controllers.Request.Computer;
+using ComputerStore.Controllers.Request.Order;
+using ComputerStore.Controllers.Request.User;
 using ComputerStore.Controllers.Response;
+using ComputerStore.Controllers.Response.Computer;
+using ComputerStore.Controllers.Response.Order;
+using ComputerStore.Controllers.Response.User;
 using ComputerStore.Database;
 using ComputerStore.Domain;
 

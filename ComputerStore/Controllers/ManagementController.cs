@@ -1,6 +1,9 @@
 using System;
 using ComputerStore.Controllers.Request;
+using ComputerStore.Controllers.Request.Computer;
+using ComputerStore.Controllers.Request.User;
 using ComputerStore.Controllers.Response;
+using ComputerStore.Controllers.Response.User;
 using ComputerStore.Database;
 using ComputerStore.Domain;
 using ComputerStore.Services;

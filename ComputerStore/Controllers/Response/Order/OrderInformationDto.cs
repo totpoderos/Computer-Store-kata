@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace ComputerStore.Controllers.Response
+namespace ComputerStore.Controllers.Response.Order
 {
     public class OrderInformationDto
     {

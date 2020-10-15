@@ -1,4 +1,4 @@
-namespace ComputerStore.Controllers.Response
+namespace ComputerStore.Controllers.Response.Order
 {
     public class NewOrderIdDto
     {

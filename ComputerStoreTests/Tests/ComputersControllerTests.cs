@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ComputerStore.Controllers;
 using ComputerStore.Controllers.Response;
-using ComputerStore.Services;
+using ComputerStore.Controllers.Response.Computer;
 using NUnit.Framework;
 
 namespace ComputerStoreTests.Tests
