@@ -15,4 +15,6 @@ Controllers are not real controllers, are just regular classes with public metho
 
 Database is an in-memory database implementation with Entity Framework or ORM flavour (apologies to ORM developers).
 
+Finally some good news, project comes with many end to end tests (not all edge cases are tested). It can help you on refactoring as long as controllers methods signatures are respected...
+
 Have fun!
